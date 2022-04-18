@@ -1,0 +1,47 @@
+package org.dom.mon.entity;
+
+import io.quarkus.security.User;
+import io.quarkus.security.jpa.Password;
+import io.quarkus.security.jpa.Roles;
+import io.quarkus.security.jpa.UserDefinition;
+import io.quarkus.security.jpa.Username;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "users")
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@UserDefinition
+public class UserEntity extends BaseEntity {
+
+    @Column(name = "username")
+    @Username
+    public String username;
+
+    @Column(name = "password")
+    @Password
+    public String password;
+
+    @Column(name = "role")
+    @Roles
+    public String role;
+
+    @Column(name = "phone_no")
+    public String phoneNo;
+
+    @Column(name = "email_address")
+    public String emailAddress;
+
+    @Column(name = "verified")
+    public Boolean verified;
+}
+
