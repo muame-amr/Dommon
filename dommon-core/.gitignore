@@ -42,3 +42,4 @@ nb-configuration.xml
 /src/main/resources/privateKey.pem
 /src/main/resources/publicKey.pem
 /src/main/resources/templates/EmailService/hello.html
+/src/main/resources/templates/ActivationResource/hello.html
