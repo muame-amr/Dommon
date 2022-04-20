@@ -15,14 +15,14 @@ import javax.persistence.*;
 @NoArgsConstructor
 public class VerificationEntity extends BaseEntity{
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @MapsId
     @JoinColumn(name = "user_id")
-    public UserEntity user;
+    public UserEntity userEntity;
 
     @Column(name = "activation_token")
     public String activationToken;
 
-    @Column(name = "reset_token")
-    public String resetToken;
+    @Column(name = "expired")
+    public Boolean expired;
 }

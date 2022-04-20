@@ -6,7 +6,6 @@ import org.dom.mon.dto.Base;
 import org.dom.mon.dto.auth.AuthnLogin;
 import org.dom.mon.dto.auth.AuthnRegister;
 import org.dom.mon.entity.UserEntity;
-import org.dom.mon.service.EmailService;
 import org.dom.mon.service.UserService;
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
@@ -27,9 +26,6 @@ public class AuthenticationResource {
 
     @Inject
     UserService userService;
-
-    @Inject
-    EmailService emailService;
 
     @Context
     SecurityContext securityContext;
@@ -66,10 +62,9 @@ public class AuthenticationResource {
         UserEntity userEntity = userService.createUser(username, emailAddress, password, phoneNo);
         userEntity.persist();
 
-        /* send verification mail here */
-        emailService.sendActivationLink()
+        userService.createActivation(userEntity);
 
-        return Response.status(Response.Status.CREATED).entity(new Base(null, true, "User created")).build();
+        return Response.status(Response.Status.CREATED).entity(new Base(userEntity.id, true, "User created")).build();
     }
 
     @POST
@@ -89,11 +84,14 @@ public class AuthenticationResource {
         Optional<UserEntity> userEntityOptional = userService.getUserByUsername(username);
 
         if (userEntityOptional.isEmpty() || !username.equals(authnLogin.getUsername()))
-                return Response.status(Response.Status.NOT_FOUND).entity(new Base(false, "User doesn't exist !")).build();
+            return Response.status(Response.Status.NOT_FOUND).entity(new Base(false, "User doesn't exist !")).build();
 
         UserEntity userEntity = userEntityOptional.get();
         if(!userService.verifyPassword(authnLogin.getPassword(), userEntity.getPassword()))
-                return Response.status(Response.Status.BAD_REQUEST).entity(new Base(false, "Wrong password !")).build();
+            return Response.status(Response.Status.BAD_REQUEST).entity(new Base(false, "Wrong password !")).build();
+
+        if(!userEntity.getVerified())
+            return Response.status(Response.Status.BAD_REQUEST).entity(new Base(false, "Account not verified !")).build();
 
         String token = Utils.generateJWT(userEntity.id, userEntity.getUsername(), userEntity.getRole());
         return Response.ok(new Base("Bearer " + token, true, "Successfully Logged In")).build();

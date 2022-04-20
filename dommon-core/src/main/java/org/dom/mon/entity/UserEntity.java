@@ -10,9 +10,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "users")
@@ -43,5 +41,9 @@ public class UserEntity extends BaseEntity {
 
     @Column(name = "verified")
     public Boolean verified;
+
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "userEntity")
+    @JoinColumn(name = "verification_id")
+    public VerificationEntity verification;
 }
 

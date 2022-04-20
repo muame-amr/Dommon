@@ -3,9 +3,11 @@ package org.dom.mon.service;
 import io.quarkus.elytron.security.common.BcryptUtil;
 import org.dom.mon.Global;
 import org.dom.mon.entity.UserEntity;
+import org.dom.mon.entity.VerificationEntity;
 
 import javax.enterprise.context.ApplicationScoped;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -14,6 +16,10 @@ public class UserService {
 
     public Optional<UserEntity> getUserByUsername(String username) {
         return UserEntity.find("username", username).firstResultOptional();
+    }
+
+    public Optional<UserEntity> getUserById(Long id) {
+        return UserEntity.findByIdOptional(id);
     }
 
     public boolean validatePassword(String password) {
@@ -39,5 +45,14 @@ public class UserService {
 
     public Boolean verifyPassword(String password, String passwordHash) {
         return BcryptUtil.matches(password, passwordHash);
+    }
+
+    public void createActivation(UserEntity userEntity) {
+        String token = UUID.randomUUID().toString();
+        VerificationEntity verificationEntity = new VerificationEntity();
+        verificationEntity.setUserEntity(UserEntity.findById(userEntity.id));
+        verificationEntity.setActivationToken(token);
+        verificationEntity.setExpired(false);
+        verificationEntity.persist();
     }
 }

@@ -248,7 +248,7 @@
 								"
 							>
 								<p style="margin: 0; text-align: center">
-									Tap the button below to confirm your email address. If you
+									Hi, {username}! Tap the button below to confirm your email address. If you
 									didn't create an account with Dommon, you can safely delete
 									this email.
 								</p>
@@ -270,7 +270,7 @@
 														style="border-radius: 6px"
 													>
 														<a
-															href="https://sendgrid.com"
+															href={activationLink}
 															target="_blank"
 															style="
 																display: inline-block;
@@ -282,7 +282,7 @@
 																text-decoration: none;
 																border-radius: 6px;
 															"
-															>Do Something Sweet</a
+															>Activate Account</a
 														>
 													</td>
 												</tr>
@@ -312,7 +312,7 @@
 									your browser:
 								</p>
 								<p style="margin: 0">
-									<a href="{activationLink}" target="_blank"
+									<a href={activationLink} target="_blank"
 										>{activationLink}</a
 									>
 								</p>
