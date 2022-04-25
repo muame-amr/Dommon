@@ -32,7 +32,7 @@ public class ActivationResource {
     }
 
     @GET
-    @Path("{userId}/activation")
+    @Path("{userId}")
     @Operation(
             operationId = "Send Activation Link",
             summary = "Send verfication email with activation link to activate account")
@@ -54,7 +54,7 @@ public class ActivationResource {
                 .send();
     }
 
-    @POST
+    @GET
     @Path("{userId}/activation")
     @Transactional
     @Produces(MediaType.APPLICATION_JSON)
