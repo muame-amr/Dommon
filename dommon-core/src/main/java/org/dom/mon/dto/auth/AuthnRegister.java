@@ -12,5 +12,4 @@ import lombok.Setter;
 public class AuthnRegister extends AuthnBase {
     private String username;
     private String emailAddress;
-    private String phoneNo;
 }

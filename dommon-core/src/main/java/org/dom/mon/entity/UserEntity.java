@@ -33,9 +33,6 @@ public class UserEntity extends BaseEntity {
     @Roles
     public String role;
 
-    @Column(name = "phone_no")
-    public String phoneNo;
-
     @Column(name = "email_address")
     public String emailAddress;
 

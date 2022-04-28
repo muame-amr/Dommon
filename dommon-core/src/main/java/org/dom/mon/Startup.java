@@ -21,9 +21,6 @@ public class Startup {
     @ConfigProperty(name = "admin.email")
     public String emailAddress;
 
-    @ConfigProperty(name = "admin.phone-no")
-    public String phoneNo;
-
     @Transactional
     public void loadUsers(@Observes StartupEvent event) {
         UserEntity userEntity = new UserEntity();
@@ -31,7 +28,6 @@ public class Startup {
         userEntity.setPassword(BcryptUtil.bcryptHash(password));
         userEntity.setRole(Global.ADMIN);
         userEntity.setEmailAddress(emailAddress);
-        userEntity.setPhoneNo(phoneNo);
         userEntity.setVerified(true);
         userEntity.persist();
     }

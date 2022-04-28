@@ -47,7 +47,6 @@ public class AuthenticationResource {
 
         final String username = authnRegister.getUsername();
         final String emailAddress = authnRegister.getEmailAddress();
-        final String phoneNo = authnRegister.getPhoneNo();
         final String password = authnRegister.getPassword();
 
         if(!userService.validatePassword(password))
@@ -59,7 +58,7 @@ public class AuthenticationResource {
         if (userService.getUserByUsername(username).isPresent())
             return Response.status(Response.Status.CONFLICT).entity(new Base(null, false, "Username already exist")).build();
 
-        UserEntity userEntity = userService.createUser(username, emailAddress, password, phoneNo);
+        UserEntity userEntity = userService.createUser(username, emailAddress, password);
         userEntity.persist();
 
         userService.createActivation(userEntity);

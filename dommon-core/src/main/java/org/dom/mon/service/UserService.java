@@ -32,12 +32,11 @@ public class UserService {
         return UserEntity.find("emailAddress", emailAddress).firstResultOptional().isPresent() ? true : false;
     }
 
-    public UserEntity createUser(String username, String emailAddress, String password, String phoneNo) {
+    public UserEntity createUser(String username, String emailAddress, String password) {
         UserEntity userEntity = new UserEntity();
         userEntity.setUsername(username);
         userEntity.setPassword(BcryptUtil.bcryptHash(password));
         userEntity.setEmailAddress(emailAddress);
-        userEntity.setPhoneNo(phoneNo);
         userEntity.setRole(Global.USER);
         userEntity.setVerified(false);
         return userEntity;
