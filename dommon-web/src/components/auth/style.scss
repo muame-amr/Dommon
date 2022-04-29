@@ -2,7 +2,7 @@
 	@apply w-full flex flex-col items-center;
 
 	.header {
-		@apply text-2xl font-mono font-bold;
+		@apply text-2xl font-mono font-bold text-pink-500;
 	}
 
 	.content {
@@ -28,6 +28,18 @@
 
 				input {
 					@apply w-[18em] mt-1 h-9 px-3 text-xs text-slate-900 font-sans bg-gray-100 border-0 rounded-md transition-all duration-200 ease-in-out focus:outline-none focus:shadow-sm focus:shadow-teal-400;
+				}
+
+				.password-field {
+					@apply flex flex-row justify-start;
+
+					.password {
+						@apply w-[16em] mt-1 h-9 px-3 text-xs text-slate-900 font-sans bg-gray-100 border-0 rounded-l-md transition-all duration-200 ease-in-out focus:outline-none focus:shadow-sm focus:shadow-teal-400;
+					}
+
+					.field-icon {
+						@apply text-xs text-pink-500 font-bold mt-1 min-w-[2em] h-9 p-1 ml-1 rounded-full;
+					}
 				}
 				p {
 					@apply text-red-500 text-xs italic;

@@ -1,6 +1,7 @@
 import "./style.scss";
-import React from "react";
+import React, { useState } from "react";
 import registerImg from "../../assets/cyborg-sign-up.png";
+import { RiEyeLine, RiEyeCloseLine } from "react-icons/ri";
 
 export const Register = ({
 	username,
@@ -10,6 +11,10 @@ export const Register = ({
 	handleSubmit,
 	errors,
 }) => {
+	const [passwordShown, setPasswordShown] = useState(false);
+	const togglePassword = () => {
+		setPasswordShown(!passwordShown);
+	};
 	return (
 		<div className="base-container">
 			<div className="header">Register</div>
@@ -42,13 +47,24 @@ export const Register = ({
 					</div>
 					<div className="form-group">
 						<label htmlFor="password">Password</label>
-						<input
-							type="password"
-							name="password"
-							placeholder="password"
-							value={password}
-							onChange={handleChange}
-						/>
+						<div className="password-field">
+							<input
+								type={passwordShown ? "text" : "password"}
+								name="password"
+								placeholder="password"
+								className="password"
+								value={password}
+								onChange={handleChange}
+							/>
+							{passwordShown ? (
+								<RiEyeCloseLine
+									onClick={togglePassword}
+									className="field-icon"
+								/>
+							) : (
+								<RiEyeLine onClick={togglePassword} className="field-icon" />
+							)}
+						</div>
 						<p>{errors.password}</p>
 					</div>
 					<button type="button" className="btn" onClick={handleSubmit}>
