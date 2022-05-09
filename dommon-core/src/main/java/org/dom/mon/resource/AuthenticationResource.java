@@ -11,7 +11,6 @@ import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 
 import javax.annotation.security.PermitAll;
-import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
 import javax.ws.rs.*;
@@ -32,7 +31,6 @@ public class AuthenticationResource {
 
     @POST
     @Path("register")
-    @PermitAll
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Operation(
@@ -52,11 +50,12 @@ public class AuthenticationResource {
         if(!userService.validatePassword(password))
             return Response.status(Response.Status.BAD_REQUEST).entity(new Base(null, false, "Invalid Password")).build();
 
+        if (userService.getUserByUsername(username).isPresent())
+            return Response.status(Response.Status.CONFLICT).entity(new Base(null, false, "Username already exist")).build();
+
         if(userService.checkEmailExist(emailAddress))
             return Response.status(Response.Status.CONFLICT).entity(new Base(null, false, "Email address already exist")).build();
 
-        if (userService.getUserByUsername(username).isPresent())
-            return Response.status(Response.Status.CONFLICT).entity(new Base(null, false, "Username already exist")).build();
 
         UserEntity userEntity = userService.createUser(username, emailAddress, password);
         userEntity.persist();
@@ -68,7 +67,7 @@ public class AuthenticationResource {
 
     @POST
     @Path("login/user")
-    @RolesAllowed({Global.USER, Global.ADMIN})
+    @PermitAll
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Operation(
@@ -79,7 +78,7 @@ public class AuthenticationResource {
             description = "Successfully login"
     )
     public Response loginUser(AuthnLogin authnLogin) {
-        final String username = securityContext.getUserPrincipal().getName();
+        final String username = authnLogin.getUsername();
         Optional<UserEntity> userEntityOptional = userService.getUserByUsername(username);
 
         if (userEntityOptional.isEmpty() || !username.equals(authnLogin.getUsername()))
