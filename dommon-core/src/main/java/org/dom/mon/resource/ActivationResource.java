@@ -50,7 +50,7 @@ public class ActivationResource {
 
         UserEntity userEntity =userService.getUserById(id).get();
         log.info(userEntity.toString());
-        URI activationLink = URI.create("http://localhost:8080/api/mail/" +
+        URI activationLink = URI.create("https://dommon.herokuapp.com/api/mail/" +
                 userEntity.id + "/activation?token=" +
                 userEntity.getVerification().getActivationToken());
 

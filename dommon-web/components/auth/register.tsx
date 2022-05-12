@@ -17,7 +17,7 @@ import * as Yup from "yup";
 import { Formik, Form, Field, FormikHelpers, FormikProps } from "formik";
 import { FC, useState } from "react";
 import { RiEyeLine, RiEyeCloseLine } from "react-icons/ri";
-import { RegisterValues } from "../../pages/_interfaces";
+import { RegisterValues } from "../../interfaces/auth";
 
 const signUpSchema = Yup.object().shape({
 	username: Yup.string()

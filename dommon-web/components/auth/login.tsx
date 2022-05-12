@@ -17,7 +17,7 @@ import * as Yup from "yup";
 import { Formik, Form, Field, FormikHelpers, FormikProps } from "formik";
 import { FC, useState } from "react";
 import { RiEyeLine, RiEyeCloseLine } from "react-icons/ri";
-import { LoginValues } from "../../pages/_interfaces";
+import { LoginValues } from "../../interfaces/auth";
 
 interface Props {
 	handleLogin: (values: LoginValues) => void;

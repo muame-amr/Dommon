@@ -1,5 +1,5 @@
 import axios from "axios";
-import { LoginValues, RegisterValues } from "../pages/_interfaces";
+import { LoginValues, RegisterValues } from "../interfaces/auth";
 
 export const register = async (registerValues: RegisterValues) => {
 	console.log(registerValues);

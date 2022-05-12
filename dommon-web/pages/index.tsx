@@ -7,7 +7,7 @@ import { activationLink, login, register } from "../api/auth";
 import { Login } from "../components/auth/login";
 import { Register } from "../components/auth/register";
 import { Banner } from "../components/banner/banner";
-import { LoginValues, RegisterValues } from "./_interfaces";
+import { LoginValues, RegisterValues } from "../interfaces/auth";
 
 const Home: NextPage = () => {
 	const [isLogin, setIsLogin] = useState<boolean>(true);
