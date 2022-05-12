@@ -1,6 +1,5 @@
 import { Box, Flex } from "@chakra-ui/react";
-import axios from "axios";
-import { FormikValues } from "formik";
+import Cookies from "universal-cookie";
 import type { NextPage } from "next";
 import { useEffect, useRef, useState } from "react";
 import { activationLink, login, register } from "../api/auth";
@@ -14,6 +13,7 @@ const Home: NextPage = () => {
 	const [message, setMessage] = useState<string>("Lorem Ipsum Dolor Amet Sit");
 	const [isSuccess, setIsSuccess] = useState<boolean>(true);
 	const rightSide = useRef<any>();
+	const cookies = new Cookies();
 	const [isVisible, setIsVisible] = useState<boolean>(false);
 
 	useEffect(() => {
@@ -35,7 +35,7 @@ const Home: NextPage = () => {
 		login(values).then((res) => {
 			setIsVisible(true);
 			if (res.status === 200) {
-				console.log(res.data.data);
+				cookies.set("jwt", res.data.data);
 				setIsSuccess(res.data.success);
 				setMessage(res.data.message);
 			} else {

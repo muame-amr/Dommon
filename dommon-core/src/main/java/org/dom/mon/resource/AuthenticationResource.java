@@ -92,6 +92,6 @@ public class AuthenticationResource {
             return Response.status(Response.Status.BAD_REQUEST).entity(new Base(false, "Account not verified !")).build();
 
         String token = Utils.generateJWT(userEntity.id, userEntity.getUsername(), userEntity.getRole());
-        return Response.ok(new Base("Bearer " + token, true, "Successfully Logged In")).build();
+        return Response.ok(new Base(token, true, "Successfully Logged In")).build();
     }
 }
