@@ -17,27 +17,19 @@ import * as Yup from "yup";
 import { Formik, Form, Field, FormikHelpers, FormikProps } from "formik";
 import { FC, useState } from "react";
 import { RiEyeLine, RiEyeCloseLine } from "react-icons/ri";
+import { LoginValues } from "../../pages/_interfaces";
 
-interface FormValues {
-	username: string;
-	password: string;
+interface Props {
+	handleLogin: (values: LoginValues) => void;
 }
 
 const signInSchema = Yup.object().shape({
-	username: Yup.string()
-		.required("Username is required")
-		.min(6, "Username must be at least 6 characters")
-		.max(20, "Username must be less than 20 characters"),
-	password: Yup.string()
-		.required("Password is required")
-		.matches(
-			/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})/,
-			"Invalid password format"
-		),
+	username: Yup.string().required("Username is required"),
+	password: Yup.string().required("Password is required"),
 });
 
-export const Login: FC = () => {
-	const initialValues: FormValues = { username: "", password: "" };
+export const Login: FC<Props> = ({ handleLogin }) => {
+	const initialValues: LoginValues = { username: "", password: "" };
 	const [show, setShow] = useState<boolean>(false);
 
 	return (
@@ -69,11 +61,9 @@ export const Login: FC = () => {
 				</Box>
 				<Formik
 					initialValues={initialValues}
-					onSubmit={(values: FormValues, { setSubmitting }) => {
-						setTimeout(() => {
-							alert(JSON.stringify(values, null, 2));
-							setSubmitting(false);
-						}, 1000);
+					onSubmit={(values: LoginValues, { setSubmitting }) => {
+						handleLogin(values);
+						setSubmitting(false);
 					}}
 					validationSchema={signInSchema}
 				>
@@ -95,10 +85,7 @@ export const Login: FC = () => {
 									"flex flex-col justify-center items-center max-w-[18em]"
 								}
 							>
-								<FormControl
-									isInvalid={errors.username && touched.username}
-									isRequired
-								>
+								<FormControl isInvalid={errors.username && touched.username}>
 									<FormLabel
 										fontSize="sm"
 										fontWeight="semibold"
@@ -128,10 +115,7 @@ export const Login: FC = () => {
 										</Text>
 									) : undefined}
 								</FormControl>
-								<FormControl
-									isInvalid={errors.password && touched.password}
-									isRequired
-								>
+								<FormControl isInvalid={errors.password && touched.password}>
 									<FormLabel
 										fontSize="sm"
 										fontWeight="semibold"

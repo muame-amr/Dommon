@@ -37,9 +37,6 @@ nb-configuration.xml
 
 # Local environment
 .env
-/src/main/resources/private_key.pem
 /src/main/java/org/dom/mon/TestLab.java
-/src/main/resources/privateKey.pem
-/src/main/resources/publicKey.pem
 /src/main/resources/templates/EmailService/hello.html
 /src/main/resources/templates/ActivationResource/hello.html

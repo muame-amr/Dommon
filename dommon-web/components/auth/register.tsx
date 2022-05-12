@@ -17,14 +17,9 @@ import * as Yup from "yup";
 import { Formik, Form, Field, FormikHelpers, FormikProps } from "formik";
 import { FC, useState } from "react";
 import { RiEyeLine, RiEyeCloseLine } from "react-icons/ri";
+import { RegisterValues } from "../../pages/_interfaces";
 
-interface FormValues {
-	username: string;
-	password: string;
-	email: string;
-}
-
-const signInSchema = Yup.object().shape({
+const signUpSchema = Yup.object().shape({
 	username: Yup.string()
 		.required("Username is required")
 		.min(6, "Username must be at least 6 characters")
@@ -35,11 +30,19 @@ const signInSchema = Yup.object().shape({
 			/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})/,
 			"Invalid password format"
 		),
-	email: Yup.string().email().required("Email is required"),
+	emailAddress: Yup.string().email().required("Email is required"),
 });
 
-export const Register: FC = () => {
-	const initialValues: FormValues = { username: "", password: "", email: "" };
+interface Props {
+	handleRegister: (values: RegisterValues) => void;
+}
+
+export const Register: FC<Props> = ({ handleRegister }) => {
+	const initialValues: RegisterValues = {
+		username: "",
+		password: "",
+		emailAddress: "",
+	};
 	const [show, setShow] = useState<boolean>(false);
 
 	return (
@@ -71,13 +74,11 @@ export const Register: FC = () => {
 				</Box>
 				<Formik
 					initialValues={initialValues}
-					onSubmit={(values: FormValues, { setSubmitting }) => {
-						setTimeout(() => {
-							alert(JSON.stringify(values, null, 2));
-							setSubmitting(false);
-						}, 1000);
+					onSubmit={(values: RegisterValues, { setSubmitting }) => {
+						handleRegister(values);
+						setSubmitting(false);
 					}}
-					validationSchema={signInSchema}
+					validationSchema={signUpSchema}
 				>
 					{(props: any) => {
 						const {
@@ -97,10 +98,7 @@ export const Register: FC = () => {
 									"flex flex-col justify-center items-center max-w-[18em]"
 								}
 							>
-								<FormControl
-									isInvalid={errors.username && touched.username}
-									isRequired
-								>
+								<FormControl isInvalid={errors.username && touched.username}>
 									<FormLabel
 										fontSize="sm"
 										fontWeight="semibold"
@@ -130,10 +128,7 @@ export const Register: FC = () => {
 										</Text>
 									) : undefined}
 								</FormControl>
-								<FormControl
-									isInvalid={errors.password && touched.password}
-									isRequired
-								>
+								<FormControl isInvalid={errors.password && touched.password}>
 									<FormLabel
 										fontSize="sm"
 										fontWeight="semibold"
@@ -180,10 +175,7 @@ export const Register: FC = () => {
 										</Text>
 									) : undefined}
 								</FormControl>
-								<FormControl
-									isInvalid={errors.username && touched.username}
-									isRequired
-								>
+								<FormControl isInvalid={errors.username && touched.username}>
 									<FormLabel
 										fontSize="sm"
 										fontWeight="semibold"
@@ -205,12 +197,12 @@ export const Register: FC = () => {
 										rounded="md"
 										transition="all 0.2s ease-in-out"
 										focusBorderColor="teal.300"
-										name="email"
+										name="emailAddress"
 										placeholder="email"
 									/>
-									{errors.email && touched.email ? (
+									{errors.emailAddress && touched.emailAddress ? (
 										<Text fontSize="xs" fontStyle="italic" color="red.500">
-											{errors.email}
+											{errors.emailAddress}
 										</Text>
 									) : undefined}
 								</FormControl>

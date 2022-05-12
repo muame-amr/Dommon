@@ -51,10 +51,10 @@ public class AuthenticationResource {
             return Response.status(Response.Status.BAD_REQUEST).entity(new Base(null, false, "Invalid Password")).build();
 
         if (userService.getUserByUsername(username).isPresent())
-            return Response.status(Response.Status.CONFLICT).entity(new Base(null, false, "Username already exist")).build();
+            return Response.status(Response.Status.CONFLICT).entity(new Base(null, false, "Username already exist !")).build();
 
         if(userService.checkEmailExist(emailAddress))
-            return Response.status(Response.Status.CONFLICT).entity(new Base(null, false, "Email address already exist")).build();
+            return Response.status(Response.Status.CONFLICT).entity(new Base(null, false, "Email address already exist !")).build();
 
 
         UserEntity userEntity = userService.createUser(username, emailAddress, password);
@@ -62,7 +62,7 @@ public class AuthenticationResource {
 
         userService.createActivation(userEntity);
 
-        return Response.status(Response.Status.CREATED).entity(new Base(userEntity.id, true, "User created")).build();
+        return Response.status(Response.Status.CREATED).entity(new Base(userEntity.id, true, "Registration complete! Please check your email for activation link!")).build();
     }
 
     @POST
@@ -86,7 +86,7 @@ public class AuthenticationResource {
 
         UserEntity userEntity = userEntityOptional.get();
         if(!userService.verifyPassword(authnLogin.getPassword(), userEntity.getPassword()))
-            return Response.status(Response.Status.BAD_REQUEST).entity(new Base(false, "Wrong password !")).build();
+            return Response.status(Response.Status.UNAUTHORIZED).entity(new Base(false, "Wrong username or password !")).build();
 
         if(!userEntity.getVerified())
             return Response.status(Response.Status.BAD_REQUEST).entity(new Base(false, "Account not verified !")).build();
